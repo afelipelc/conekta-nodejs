@@ -1,0 +1,18 @@
+{
+  "name": "conekta-demo",
+  "version": "1.0.0",
+  "description": "Conekta node cliente api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "felipelc",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "conekta": "^3.5.1",
+    "debug": "^4.1.0",
+    "express": "^4.16.4",
+    "jade": "^1.11.0"
+  }
+}
