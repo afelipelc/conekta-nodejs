@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  h1 View charge
+  p The payment amount ${charge.amount / 100} MXN has status: ${charge.status}
+  pre #{JSON.stringify(charge, null, 2)} 

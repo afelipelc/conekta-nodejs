@@ -1,0 +1,55 @@
+extends layout
+block content
+  h1 Tokenize card and create payment.
+  form#card-form(method="post", action="/charge")
+    input(type="hidden", name="currency", value="MXN")
+    input(type="hidden", name="description", value="Test product payment")
+    input(type="hidden", name="reference_id", value="charge_0001_test")
+    p
+      label Amount
+      input(type="text", name="amount")
+    p
+      label Customer email
+      input(type="text", name="details[email]")
+    p
+      label Cardholder name
+      input(type="text", size="20", data-conekta="card[name]")
+    p
+      label Cardholder number
+      input(type="text", minlength="16", data-conekta="card[number]")
+    p
+      label CVC
+      input(type="text", minlength="3", data-conekta="card[cvc]")
+    p
+      label Expiration date (MM/YYYY)
+      input(type="text", minlength="2", maxlength="2", data-conekta="card[exp_month]")
+      | /
+      input(type="text", minlength="4", maxlength="4", data-conekta="card[exp_year]")
+    p
+      button(type="submit") Pay now
+
+block script
+  script
+    Conekta.setPublicKey('')
+    var conektaSuccessResponseHandler = function(token) {
+      var $form = $("#card-form");
+      //Add the token_id in the form
+      $form.append($('<input type="hidden" name="card" id="card">').val(token.id));
+      $form.get(0).submit(); //Submit
+    };
+    var conektaErrorResponseHandler = function(response) {
+      var $form = $("#card-form");
+      $form.find(".card-errors").text(response.message_to_purchaser);
+      $form.find("button").prop("disabled", false);
+    };
+
+    //jQuery generate the token on submit.
+    $(function () {
+    $("#card-form").submit(function(event) {
+    var $form = $(this);
+    // Prevents double clic
+    $form.find("button").prop("disabled", true);
+    Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler)
+    return false;
+    });
+    });
